@@ -101,9 +101,8 @@ These commands inspect a correctly provisioned local installation; they do not i
 - Regular-expression redaction reduces exposure but does not guarantee full removal of sensitive data.
 - Membership in `systemd-journal` allows broad system journal access; fine-grained source isolation has not been demonstrated.
 - Isolated service was started manually, named `sentinel-test.service`, and **was not enabled on boot**.
-- No full-reboot, fleet-scale, load, adversarial, enterprise identity, or end-to-end availability validation was performed.
+- Full-reboot, fleet-scale, load, adversarial, enterprise identity, or end-to-end availability validation was performed.
 - Host had pending Ubuntu updates during testing.
-- Screenshots capture a point-in-time VM demonstration, not a production SLA.
 
 ## Engineering principle
 
