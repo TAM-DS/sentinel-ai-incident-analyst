@@ -18,6 +18,12 @@ A working Ubuntu reference implementation combining local telemetry, determinist
 
 *Authentic local Ubuntu dashboard screenshot showing infrastructure health and deterministic incident monitoring. A zero-match sample does not imply the detector is malfunctioning.*
 
+## Linux journal analysis — historical terminal reference
+
+![Linux journalctl SSH authentication event output — historical reference](docs/images/Sentinel-04.png)
+
+*Historical Linux terminal output showing real `journalctl` SSH authentication events, including accepted public-key logins, failed passwords, and invalid usernames. The screenshot is dated **November 27, 2023** and shows a host named `server`. **It is not evidence from the October 2026 SENTINEL Ubuntu deployment**, nor does it demonstrate that SENTINEL's detector or AI processed those particular entries.*
+
 ## Architecture and security boundaries
 
 ![SENTINEL architecture — explanatory diagram](docs/images/sentinel-architecture.svg)
@@ -37,10 +43,6 @@ The following images were uploaded for the project's visual presentation. They a
 ### Visual 03
 
 ![SENTINEL — supplementary visual 03](docs/images/Sentinel-03.png)
-
-### Visual 04
-
-![SENTINEL — supplementary visual 04](docs/images/Sentinel-04.png)
 
 ## Verified engineering results — October 28, 2026
 
