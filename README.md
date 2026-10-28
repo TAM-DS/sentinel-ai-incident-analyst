@@ -6,20 +6,29 @@ A working Ubuntu reference implementation combining local telemetry, determinist
 
 > **Scope:** This is a tested reference implementation, not a production-hardened fleet service. Dashboard observations are real local Ubuntu telemetry. The AI assessment **displayed in the dashboard is a labeled synthetic fixture**, not an automatic live diagnosis. A separate OpenAI adapter successfully made one live API request using synthetic evidence.
 
-## Architecture
+## Project visual — concept illustration
 
-![SENTINEL architecture — explanatory graphic](docs/images/sentinel-architecture.svg)
+![SENTINEL Linux AI Incident Analyst — original concept poster](docs/images/Linux-Sentinel-Dashboard.png)
 
-**Telemetry → rule detection → grouping → read-only dashboard.** Model-based analysis is a separately invoked, default-disabled path. A rule match is a candidate finding, not a confirmed incident or root cause. The model cannot authorize or execute remediation.
+*Original concept artwork. This is an illustrative product vision, **not** a screenshot of the implemented dashboard, a verified incident, or an autonomous remediation capability.*
 
-## Real dashboard evidence
+## Real operations console
 
-Two authentic Ubuntu screenshots were captured during validation and are awaiting binary upload to this repository:
+![SENTINEL — authentic Ubuntu operations dashboard](docs/images/Sentinel-01.png)
 
-- **Operations console:** CPU 1-minute load, memory, disk, and local journal observation counts.
-- **Detection and synthetic demonstration:** 180 journal records examined, one deterministic service-failure rule match, one grouped candidate condition, and a clearly labeled synthetic incident assessment (evidence `E001`, approved runbook `RB-SERVICE`, root cause unknown).
+*Authentic local Ubuntu dashboard screenshot showing infrastructure health and deterministic incident monitoring. A zero-match sample does not imply the detector is malfunctioning.*
 
-These screenshots are **not represented by the architecture illustration above**. They will be published as original, unmodified captures.
+## Architecture and security boundaries
+
+![SENTINEL architecture — explanatory diagram](docs/images/sentinel-architecture.svg)
+
+**Telemetry → deterministic rule detection → candidate-condition grouping → read-only dashboard.** SSH hardening, UFW, a non-sudo service identity, and a restricted systemd deployment protect the host and runtime. The model integration is separate and default-disabled in the dashboard. A rule match does not establish root cause or authorize remediation.
+
+## Detection and AI assessment evidence
+
+A separate authentic screenshot captured **180 journal events examined, one service-failure rule match, and one grouped candidate condition**. The dashboard's adjacent AI panel is **explicitly synthetic**, using evidence reference `E001` and approved runbook `RB-SERVICE`; it is not a live model diagnosis of the Ubuntu host.
+
+The original second evidence screenshot still needs verification before embedding, to avoid accidentally including material from a different project. The verified systemd recovery results follow below.
 
 ## Verified engineering results — October 28, 2026
 
