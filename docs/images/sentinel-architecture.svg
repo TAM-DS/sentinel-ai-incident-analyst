@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760" role="img" aria-label="SENTINEL architecture: local telemetry, deterministic detection, read-only dashboard, separated AI and Linux hardening">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0a1425"/><stop offset="1" stop-color="#10253b"/></linearGradient></defs>
+<rect width="1440" height="760" fill="url(#bg)"/><rect x="40" y="34" width="1360" height="692" rx="24" fill="none" stroke="#264762" stroke-width="2"/>
+<text x="86" y="112" fill="#ecf5ff" font-size="51" font-family="Arial,sans-serif" font-weight="bold">SENTINEL</text>
+<text x="88" y="151" fill="#73bde9" font-size="20" font-family="Arial,sans-serif" letter-spacing="2">GOVERNED LINUX INCIDENT ANALYSIS · REFERENCE ARCHITECTURE</text>
+<rect x="83" y="197" width="1274" height="335" rx="22" fill="#101f33" stroke="#355675" stroke-width="2"/>
+<g font-family="Arial,sans-serif" fill="#f3f7fc">
+<rect x="118" y="261" width="257" height="180" rx="16" fill="#1b3450" stroke="#4f7291"/><text x="150" y="309" font-size="24" font-weight="bold">Ubuntu telemetry</text><text x="150" y="348" font-size="17">journalctl · host metrics</text><text x="150" y="379" font-size="17">Local / read-only</text>
+<rect x="471" y="261" width="270" height="180" rx="16" fill="#1b3450" stroke="#4f7291"/><text x="502" y="309" font-size="24" font-weight="bold">Deterministic rules</text><text x="502" y="348" font-size="17">Detect · group · count</text><text x="502" y="379" font-size="17">Candidate conditions</text>
+<rect x="837" y="261" width="476" height="180" rx="16" fill="#1b3450" stroke="#4f7291"/><text x="870" y="309" font-size="24" font-weight="bold">Operations dashboard</text><text x="870" y="348" font-size="17">Read-only Streamlit · loopback-only</text><text x="870" y="379" font-size="17">Human-controlled remediation</text>
+</g>
+<path d="M390 348 H449" stroke="#70bdf0" stroke-width="6"/><path d="M446 337 l14 11 -14 11" fill="none" stroke="#70bdf0" stroke-width="6"/>
+<path d="M756 348 H814" stroke="#70bdf0" stroke-width="6"/><path d="M811 337 l14 11 -14 11" fill="none" stroke="#70bdf0" stroke-width="6"/>
+<text x="102" y="489" fill="#b9d3e6" font-size="17" font-family="Arial,sans-serif">Live observations stay local. A rule match is not proof of root cause.</text>
+<rect x="84" y="559" width="607" height="124" rx="16" fill="#173246" stroke="#408b90"/><text x="110" y="597" fill="#b8f2ed" font-size="21" font-family="Arial,sans-serif" font-weight="bold">HOST AND SERVICE HARDENING</text><text x="110" y="628" fill="#e3f2f9" font-size="17" font-family="Arial,sans-serif">ED25519 SSH · UFW · restricted service identity</text><text x="110" y="653" fill="#e3f2f9" font-size="17" font-family="Arial,sans-serif">systemd isolation · verified restart recovery</text>
+<rect x="716" y="559" width="641" height="124" rx="16" fill="#342e23" stroke="#9b864a"/><text x="742" y="597" fill="#ffe5a4" font-size="21" font-family="Arial,sans-serif" font-weight="bold">SEPARATE AI VALIDATION</text><text x="742" y="628" fill="#f4e8cd" font-size="17" font-family="Arial,sans-serif">Structured OpenAI response tested with synthetic evidence</text><text x="742" y="653" fill="#f4e8cd" font-size="17" font-family="Arial,sans-serif">No autonomous remediation · not live dashboard AI</text>
+</svg>
