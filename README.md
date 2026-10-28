@@ -1,111 +1,147 @@
 # SENTINEL
+### Hardened Linux AI Incident Analyst
 
-**Governed AI-Assisted Linux Incident Analysis**
+**Build the AI. Secure the Linux environment beneath it. Prove that it can recover.**
 
-A working Ubuntu reference implementation combining local telemetry, deterministic detection, validated AI assessment, host hardening, and a least-privilege Streamlit dashboard with verified restart recovery.
+SENTINEL is a **security-hardened Ubuntu reference implementation** combining real Linux telemetry, deterministic incident detection, separately validated structured AI analysis, least-privilege service execution, and **verified automatic recovery after a controlled process failure**.
 
-> **Scope:** This is a tested reference implementation, not a production-hardened fleet service. Dashboard observations are real local Ubuntu telemetry. The AI assessment **displayed in the dashboard is a labeled synthetic fixture**, not an automatic live diagnosis. A separate OpenAI adapter successfully made one live API request using synthetic evidence.
+We did not stop at a working AI incident dashboard. We hardened the operating environment, tested the security boundaries, deliberately terminated the restricted service process, and verified that systemd recovered it.
 
-## Project visual — concept illustration
+> **Scope:** This is a tested local reference implementation—not a production-hardened enterprise service. The dashboard is read-only; its displayed AI assessment is a **labeled synthetic demonstration**, not an automatic diagnosis of live host events. One separate OpenAI API request was successfully validated using **synthetic evidence only**.
+
+## The engineering proof
+
+| Control | Verified observation |
+|---|---|
+| **SSH hardening** | ED25519 key-based access succeeded; password-only access rejected; root SSH login prohibited |
+| **Network boundary** | UFW active, default-deny incoming, with TCP/22 allowed from the trusted LAN |
+| **Least privilege** | Dedicated `sentinel` system user; no login shell or sudo permissions |
+| **Service isolation** | Root-owned application staging, independent Python environment, hardened systemd test unit |
+| **Controlled recovery** | Process `6216` killed → systemd restarted once → process `6488` responded with **HTTP 200** |
+| **Software validation** | **29 automated tests passed**; one structured live OpenAI call validated with **synthetic** input |
+
+**Tested October 28, 2026, on Ubuntu Server running in VirtualBox.** The facts above describe the observed test environment; they are not availability guarantees.
+
+---
+
+## 01 · The vision
 
 ![SENTINEL Linux AI Incident Analyst — original concept poster](docs/images/Linux-Sentinel-Dashboard.png)
 
-*Original concept artwork. This is an illustrative product vision, **not** a screenshot of the implemented dashboard, a verified incident, or an autonomous remediation capability.*
+*Original **concept illustration** showing the intended product experience. The screens, commands, and actions depicted in this artwork are **not** presented as verified SENTINEL runtime evidence; the implemented dashboard does not perform autonomous remediation.*
 
-## Real operations console
+## 02 · What we actually built
 
-![SENTINEL — actual Ubuntu operations dashboard](01-Sentinel-png.png)
+SENTINEL reads local Ubuntu journal entries, normalizes telemetry, applies deterministic detection rules, groups candidate conditions, and displays Linux health information in a read-only Streamlit console.
 
-*Authentic SENTINEL Ubuntu operations console. Local telemetry and journal observations are read-only; zero rule matches in a selected sample do not indicate a detector failure.*
+![Real SENTINEL Ubuntu operations console](01-Sentinel-png.png)
 
-## Additional SENTINEL view
+*Authentic local operations-dashboard screenshot. CPU load is the 1-minute Linux load average—not CPU utilization. No matches in a sampled window does not imply a detector malfunction.*
 
-![SENTINEL — replacement visual 02](docs/images/02-Sentinel.png)
+**Implemented boundary:** local observation → deterministic matching → candidate-condition presentation. Detection does not establish a root cause or authorize any action.
 
-*Updated project visual supplied for the README. Consult the live dashboard and verified test results below for the scope of implemented functionality; this image is not independent proof of automated remediation or model diagnosis.*
+### Detection and AI assessment
 
-## Architecture and security boundaries
+![SENTINEL supplemental detection and assessment visual](docs/images/02-Sentinel.png)
 
-![SENTINEL architecture — explanatory diagram](docs/images/sentinel-architecture.svg)
+*Supplementary project visual; not independently sufficient to verify a live AI diagnosis or autonomous response.*
 
-**Telemetry → deterministic rule detection → candidate-condition grouping → read-only dashboard.** SSH hardening, UFW, a non-sudo service identity, and restricted systemd runtime protect the Ubuntu host. The AI integration is separate and default-disabled in the dashboard. A rule match does not establish root cause or authorize remediation.
+A separate real dashboard observation examined **180 journal records** and produced **one service-failure rule match** and **one grouped candidate condition**. The adjacent AI panel showed a **synthetic fixture**, explicitly labeled as such, with evidence reference `E001`, approved runbook `RB-SERVICE`, and an uncertainty statement: *root cause not established*.
 
-## Detection and AI assessment evidence
+A separately invoked OpenAI adapter completed **one live API request with synthetic evidence** and validated the structured result. The dashboard itself makes **no automatic API requests**.
 
-In the verified October 2026 local test, the dashboard examined **180 journal events**, produced **one service-failure rule match** and **one grouped candidate condition**. Its AI incident assessment panel used an **explicitly labeled synthetic fixture** with evidence reference `E001`, approved runbook `RB-SERVICE`, and an explicit statement that root cause was unknown. This is not a live model diagnosis of the Ubuntu host.
+## 03 · How we hardened the host and runtime
 
-## Controlled recovery — visual summary
+![SENTINEL architecture and security boundaries](docs/images/sentinel-architecture.svg)
 
-![SENTINEL — annotated process-failure and restart summary](docs/images/06-Sentinel.png)
+*Explanatory architecture illustration; the verified configuration and command results are described below.*
 
-*Presentation summary based on recorded systemd events; not a raw journal screenshot. A deliberate SIGKILL ended PID `6216`, systemd restarted the service, and PID `6488` served HTTP 200. The approximately 4.5-second interval shown is process-to-web-server-start evidence, **not** an end-to-end recovery SLA.*
+### Hardening visual
 
-## Additional project visual
+![SENTINEL supporting engineering visual 03](docs/images/Sentinel-03.png)
 
-![SENTINEL — supplementary visual 03](docs/images/Sentinel-03.png)
+*Supporting project visual. Refer to the tested controls below for authoritative implementation evidence; visual design alone does not establish a security property.*
 
-*Supplementary presentation visual; the documented tests below are the evidence for actual system behavior.*
+**Verified controls:**
 
-## Verified engineering results — October 28, 2026
+1. **SSH:** Public-key authentication enabled; password and keyboard-interactive SSH logins disabled; root SSH login disabled. A new key-only connection succeeded, and a password-only connection was rejected.
+2. **Firewall:** UFW enabled with **deny incoming / allow outgoing**. TCP/22 was allowed from the trusted `192.168.1.0/24` LAN. Network access and application accessibility were retested after activation.
+3. **Dashboard access:** The web service listened on `127.0.0.1`, with browser access forwarded through an encrypted SSH tunnel. No direct inbound Streamlit firewall exception was required.
+4. **Service identity:** The `sentinel` account uses `/usr/sbin/nologin`, has no sudo permissions, and was granted `systemd-journal` group membership to read relevant system records.
+5. **Systemd isolation:** A separate deployment under `/opt/sentinel` uses root-owned application code, an independent Python 3.14.4 / Streamlit 1.66.1 environment, and service controls including `NoNewPrivileges`, `ProtectSystem=strict`, `ProtectHome=yes`, capability restrictions, and resource ceilings.
+6. **Credential separation:** The isolated dashboard was not given the OpenAI API key, the developer's SSH credentials, or the existing development SQLite database.
 
-| Control | Observed evidence |
+The restricted test service ran on **`127.0.0.1:8503`**, independently of the original dashboard on **`127.0.0.1:8501`**.
+
+**Threat-model note:** `systemd-journal` membership grants broad journal access, and the trusted-LAN UFW rule permits SSH connectivity from any address in that subnet; SSH authentication is still required. These are deliberate, documented boundaries—not claims of complete least privilege across every source or network segment.
+
+## 04 · How we proved recovery
+
+![SENTINEL — controlled failure and automatic restart summary](docs/images/06-Sentinel.png)
+
+*Presentation summary derived from the verified systemd journal and post-recovery health check—not a raw log screenshot and not an end-to-end availability SLA.*
+
+| Time (UTC, October 28) | Recorded event |
 |---|---|
-| Automated tests | **29 passed** via `python -m unittest discover -s tests -v` |
-| Model integration | One successful live OpenAI API request with **synthetic** service-failure evidence, validated against a structured schema |
-| SSH | ED25519 key-only login succeeded; password-only login rejected; effective root SSH login prohibited |
-| Network | UFW active; deny incoming, allow outgoing; SSH TCP/22 allowed from trusted `192.168.1.0/24` LAN |
-| Privacy boundary | Dashboard bound to `127.0.0.1` and accessed through SSH forwarding; no OpenAI key copied into restricted dashboard deployment |
-| Service identity | Dedicated `sentinel` account, `/usr/sbin/nologin`, no sudo; `systemd-journal` membership permits journal reading |
-| Isolated runtime | Root-owned source in `/opt/sentinel`; independent Python 3.14.4 environment with Streamlit 1.66.1 |
-| Health | `sentinel-test.service` active, HTTP **200** at `127.0.0.1:8503/_stcore/health` |
-| Recovery | Intentional SIGKILL terminated PID **6216** at 16:45:01 UTC; systemd restarted once; replacement PID **6488** began listening at 16:45:05 UTC; post-restart `active`, `NRestarts=1`, HTTP **200** |
-| Preservation | Original dashboard remained listening on localhost port `8501` during the restricted-service recovery test |
+| **16:45:01** | Controlled `SIGKILL` terminated the restricted service's main process, PID **6216** |
+| **16:45:01** | systemd recorded `status=9/KILL` and service result `signal` |
+| **16:45:04** | systemd scheduled the automatic restart; restart counter reached **1** |
+| **16:45:05** | Replacement PID **6488** reported its web server listening on `127.0.0.1:8503` |
+| **Post-recovery check** | `active`, `MainPID=6488`, `NRestarts=1`, and **HTTP 200** from the health endpoint |
 
-**Recovery measurement:** Approximately 4.5 seconds elapsed between the failure signal and the replacement web server's startup log; this is not an end-to-end availability SLA.
+The time from the failure signal to the replacement server's startup log was **approximately 4.5 seconds**. This is a measured **process restart interval**, **not** an end-to-end recovery SLA.
 
-## Reproduce the development dashboard
+The original development dashboard remained listening on `127.0.0.1:8501` during this test.
 
-On a Linux host with appropriate journal permissions:
+### Verify the service on a provisioned Ubuntu host
+
+```bash
+systemctl show sentinel-test.service -p User -p Group -p MainPID -p NRestarts
+curl --max-time 5 -sS -o /dev/null -w 'HTTP %{http_code}\n' \
+  http://127.0.0.1:8503/_stcore/health
+sudo journalctl -u sentinel-test.service -n 20 --no-pager
+```
+
+These are **inspection commands**; they do not trigger a new failure. The tested systemd configuration is preserved at [docs/deployment/sentinel-test.service](docs/deployment/sentinel-test.service).
+
+## 05 · Run the development dashboard
+
+On a Linux host with appropriate access to system journal records and Python:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install 'streamlit==1.66.1'
 python -m unittest discover -s tests -v
-python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8501 --server.headless true
+python -m streamlit run app.py \
+  --server.address 127.0.0.1 \
+  --server.port 8501 \
+  --server.headless true
 ```
 
-From a separate workstation:
+From a second workstation, create an SSH tunnel using authorized credentials:
 
 ```bash
 ssh -N -L 8502:127.0.0.1:8501 YOUR_USER@YOUR_HOST
 ```
 
-Then open `http://127.0.0.1:8502` in a browser. The service unit in [docs/deployment/sentinel-test.service](docs/deployment/sentinel-test.service) documents the separate restricted test deployment; it assumes prior provisioning of `/opt/sentinel`, its Python environment, and the `sentinel` identity. It is **not automatically installed** by the repository.
+Open `http://127.0.0.1:8502` in a local browser.
 
-## Verify the systemd recovery evidence
+The [systemd unit](docs/deployment/sentinel-test.service) is a **reference to a tested, manually started restricted deployment**. It assumes that `/opt/sentinel`, the required Python dependencies, the non-sudo `sentinel` service identity, and journal permissions have already been provisioned. It is **not** automatically installed or enabled by cloning this repository.
 
-```bash
-systemctl show sentinel-test.service -p User -p Group -p MainPID -p NRestarts
-curl --max-time 5 -sS -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1:8503/_stcore/health
-sudo journalctl -u sentinel-test.service -n 20 --no-pager
-```
+## Limitations and validation boundaries
 
-These commands inspect a correctly provisioned local installation; they do not install the service or trigger another failure.
+- **Reference implementation, not an enterprise production deployment.** The test service was named `sentinel-test.service` and **was not enabled at boot**.
+- No full-reboot recovery, load testing, fleet-scale behavior, adversarial security assessment, enterprise identity integration, or end-to-end availability validation was performed.
+- The dashboard's AI assessment is a **synthetic fixture**. The separate live OpenAI call used **synthetic evidence**, not live Ubuntu logs.
+- Structured output validation checks shape and approved references; it does not independently prove factual accuracy or root cause.
+- Regex-based redaction is not a comprehensive guarantee against sensitive data disclosure.
+- The service's `systemd-journal` membership provides broad log access, not per-event fine-grained authorization.
+- Ubuntu had pending package/security updates during the validation session.
+- Illustrations and supplemental visuals explain concepts; **documented commands, journal entries, and tests** establish verified system behavior.
 
-## Boundaries and limitations
+---
 
-- Read-only dashboard: no autonomous remediation or automatic OpenAI requests.
-- The displayed AI panel uses synthetic data. A separate live model call used **synthetic evidence only**, not real system logs.
-- Schema validation does not establish factual correctness or root cause.
-- Regular-expression redaction reduces exposure but does not guarantee full removal of sensitive data.
-- Membership in `systemd-journal` allows broad system journal access; fine-grained source isolation has not been demonstrated.
-- Isolated service was started manually, named `sentinel-test.service`, and **was not enabled on boot**.
-- Full-reboot, fleet-scale, load, adversarial, enterprise identity, or end-to-end availability validation was performed.
-- Host had pending Ubuntu updates during testing.
-
-## Engineering principle
-
-> **Capability is not authority.** Observation, structured interpretation, human authorization, and execution must remain separate.
+> **Capability is not authority.** Detection, model interpretation, human approval, and execution are separate concerns.
 
 **Build it. Secure it. Test it. Prove it.**
