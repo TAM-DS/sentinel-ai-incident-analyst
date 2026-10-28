@@ -1,0 +1,35 @@
+# Tested reference only: requires staged /opt/sentinel and provisioned sentinel user.
+# Kept disabled at boot in the verified local deployment.
+[Unit]
+Description=SENTINEL Restricted Dashboard - Test
+After=network.target
+
+[Service]
+Type=simple
+User=sentinel
+Group=sentinel
+SupplementaryGroups=systemd-journal
+WorkingDirectory=/opt/sentinel
+ExecStart=/opt/sentinel/.venv/bin/python -m streamlit run /opt/sentinel/app.py --server.address=127.0.0.1 --server.port=8503 --server.headless=true
+Environment=HOME=/var/lib/sentinel
+Environment=STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+StateDirectory=sentinel
+StateDirectoryMode=0700
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+MemoryMax=1G
+TasksMax=100
+
+[Install]
+WantedBy=multi-user.target
