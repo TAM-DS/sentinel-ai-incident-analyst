@@ -14,35 +14,37 @@ A working Ubuntu reference implementation combining local telemetry, determinist
 
 ## Real operations console
 
-![SENTINEL — authentic Ubuntu operations dashboard](docs/images/Sentinel-01.png)
+![SENTINEL — actual Ubuntu operations dashboard](01-Sentinel-png.png)
 
-*Authentic local Ubuntu dashboard screenshot showing infrastructure health and deterministic incident monitoring. A zero-match sample does not imply the detector is malfunctioning.*
+*Authentic SENTINEL Ubuntu operations console. Local telemetry and journal observations are read-only; zero rule matches in a selected sample do not indicate a detector failure.*
 
-## Linux journal analysis — historical terminal reference
+## Additional SENTINEL view
 
-![Linux journalctl SSH authentication event output — historical reference](docs/images/Sentinel-04.png)
+![SENTINEL — replacement visual 02](docs/images/02-Sentinel.png)
 
-*Historical Linux terminal output showing real `journalctl` SSH authentication events, including accepted public-key logins, failed passwords, and invalid usernames. The screenshot is dated **November 27, 2023** and shows a host named `server`. **It is not evidence from the October 2026 SENTINEL Ubuntu deployment**, nor does it demonstrate that SENTINEL's detector or AI processed those particular entries.*
+*Updated project visual supplied for the README. Consult the live dashboard and verified test results below for the scope of implemented functionality; this image is not independent proof of automated remediation or model diagnosis.*
 
 ## Architecture and security boundaries
 
 ![SENTINEL architecture — explanatory diagram](docs/images/sentinel-architecture.svg)
 
-**Telemetry → deterministic rule detection → candidate-condition grouping → read-only dashboard.** SSH hardening, UFW, a non-sudo service identity, and a restricted systemd deployment protect the host and runtime. The model integration is separate and default-disabled in the dashboard. A rule match does not establish root cause or authorize remediation.
+**Telemetry → deterministic rule detection → candidate-condition grouping → read-only dashboard.** SSH hardening, UFW, a non-sudo service identity, and restricted systemd runtime protect the Ubuntu host. The AI integration is separate and default-disabled in the dashboard. A rule match does not establish root cause or authorize remediation.
 
 ## Detection and AI assessment evidence
 
-A separate authentic screenshot captured **180 journal events examined, one service-failure rule match, and one grouped candidate condition**. The dashboard's adjacent AI panel is **explicitly synthetic**, using evidence reference `E001` and approved runbook `RB-SERVICE`; it is not a live model diagnosis of the Ubuntu host.
+In the verified October 2026 local test, the dashboard examined **180 journal events**, produced **one service-failure rule match** and **one grouped candidate condition**. Its AI incident assessment panel used an **explicitly labeled synthetic fixture** with evidence reference `E001`, approved runbook `RB-SERVICE`, and an explicit statement that root cause was unknown. This is not a live model diagnosis of the Ubuntu host.
 
-The original second evidence screenshot still needs verification before embedding, to avoid accidentally including material from a different project. The verified systemd recovery results follow below.
+## Controlled recovery — visual summary
 
-## Additional SENTINEL visuals
+![SENTINEL — annotated process-failure and restart summary](docs/images/06-Sentinel.png)
 
-The following images were uploaded for the project's visual presentation. They are shown as **supplementary visuals**, not independent verification of live incidents, automated actions, or recovery metrics. For technical results, refer to the real dashboard screenshot and the documented tests below.
+*Presentation summary based on recorded systemd events; not a raw journal screenshot. A deliberate SIGKILL ended PID `6216`, systemd restarted the service, and PID `6488` served HTTP 200. The approximately 4.5-second interval shown is process-to-web-server-start evidence, **not** an end-to-end recovery SLA.*
 
-### Visual 03
+## Additional project visual
 
 ![SENTINEL — supplementary visual 03](docs/images/Sentinel-03.png)
+
+*Supplementary presentation visual; the documented tests below are the evidence for actual system behavior.*
 
 ## Verified engineering results — October 28, 2026
 
