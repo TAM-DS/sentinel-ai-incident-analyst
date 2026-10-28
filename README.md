@@ -30,6 +30,18 @@ A separate authentic screenshot captured **180 journal events examined, one serv
 
 The original second evidence screenshot still needs verification before embedding, to avoid accidentally including material from a different project. The verified systemd recovery results follow below.
 
+## Additional SENTINEL visuals
+
+The following images were uploaded for the project's visual presentation. They are shown as **supplementary visuals**, not independent verification of live incidents, automated actions, or recovery metrics. For technical results, refer to the real dashboard screenshot and the documented tests below.
+
+### Visual 03
+
+![SENTINEL — supplementary visual 03](docs/images/Sentinel-03.png)
+
+### Visual 04
+
+![SENTINEL — supplementary visual 04](docs/images/Sentinel-04.png)
+
 ## Verified engineering results — October 28, 2026
 
 | Control | Observed evidence |
